@@ -1,0 +1,104 @@
+spring:
+  application:
+    name: socio-seer-restapp
+  http:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/schedulerdb?autoReconnect=true&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  mail:
+    port: 587
+    host: smtp.gmail.com
+    protocol: smtp
+    username: socioseeer@gmail.com
+    password: change_me
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.starttls.enable: true
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.smtp.socketFactory.port: 465
+  thymeleaf:
+    enabled: false
+    content-type: text/html; charset=utf-8
+    check-template-location: true
+    prefix: classpath:/templates/email/
+    suffix: .html
+    encoding: UTF-8
+    cache: true
+    mode: HTML5       
+
+server:
+  port: 8083
+
+socio:
+  seer:
+    secret:
+      key: v3Ry5ecR3tK3Y
+    auth:
+      header: X-AUTH-HEADER
+    media:
+      url: http://14.141.23.102/images
+      location: /home/orange/assets
+     
+      
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+  instance:
+    preferIpAddress: true
+    metadataMap:
+      instanceId: ${spring.application.name}:${server.port}
+
+mongo:
+  host: localhost:27017
+  db:
+    name: socio-seer
+
+
+quartz:
+  enabled:true
+
+kafka:
+  servers:
+    bootstrap: localhost:9092
+  consumer: 
+    group:
+      socialPostId: social-post-id-group
+  topic:
+    socialPost: social-post
+    socialPostId: social-post-id
+    socialHandlerTopic: social-handler-topic
+    socialPostAggregator: social-post-aggregator
+    socialHandlerUserId: social-handler-user-topic
+    emailNotification: email-notification-topic
+    campaignHashTagSummary: campaign-hash-tag-summary
+    userMentionSummary: user-mentions-summary
+    socialUserProfile: social-user-profile
+    
+redis:
+  host: 127.0.0.1
+  password: 
+  port: 6379
+
+cron:
+  expression:
+    post-schedule: 0 0/1 * * * ?
+    fb-handler-validator: 0 0/1 * * * ?
+
+facebook:
+  token:
+    expiration: 60
+    
+alert:
+  token:
+    expiration: 30
+    email:
+      subject: SocioSeer | alert expire facebook access token
+      from: socioseeer@gmail.com
+      page: ACCESS_TOKEN_ALERT
+      message: Your facebook access token will expire in %s days. Please update your token.

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: socio-seer-authorization-service
+
+server:
+  port: 8082
+
+socio:
+  seer:
+    secret:
+      key: v3Ry5ecR3tK3Y
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+  instance:
+    preferIpAddress: true
+    metadataMap:
+      instanceId: ${spring.application.name}:${server.port}

@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: socio-seer-zuul-server
+  http:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+
+server:
+  port: 8080
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+  instance:
+    preferIpAddress: true
+    metadataMap:
+      instanceId: ${spring.application.name}:${server.port}
+
+zuul:
+  #hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+  hystrix.command.default.execution.timeout.enabled: false
+  ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
+  routes:
+    authentication:
+      path: /api/auth/**
+      serviceId: socio-seer-auth-service
+    admin:
+      path: /api/admin/**
+      serviceId: socio-seer-restapp
+  host:
+    socket-timout-millis: 60000
+      
+socio:
+  seer:
+    apis: /api/admin/,/api/integration/
+    auth:
+      header: X-AUTH-HEADER
+    secret:
+      key: v3Ry5ecR3tK3Y
+
+    

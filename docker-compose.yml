@@ -1,0 +1,43 @@
+version: '2'
+services:
+  eureka:
+    image: socio-seer-eureka
+    container_name: eureka 
+    ports: 
+      - "8761:8761"
+      
+  zuul:
+    image: socio-seer-zuul
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka
+    
+  rest-app:
+    image: socio-seer-rest-app
+    ports:
+      - "8083"
+    depends_on:
+      - zuul
+    network_mode: "host"
+  
+  auth-service:
+    image: socio-seer-auth-service
+    ports:
+      - "8081"
+    depends_on:
+      - rest-app
+    network_mode: "host"
+   
+  authorization-service:
+    image: socio-seer-authorization-service
+    ports:
+      - "8082"
+    depends_on:
+      - rest-app
+  
+  redis:
+    image: redis
+    container_name: socio-seer-redis
+    ports:
+      - "6379:6379"

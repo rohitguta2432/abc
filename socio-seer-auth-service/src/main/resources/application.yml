@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: socio-seer-auth-service
+
+server:
+  port: 8081
+
+auth:
+  token:
+    secret: verySecretKey
+    expiration: 1
+  header: X-Auth-Token
+
+forgot:
+  password:
+    expiration: 1
+    email:
+      subject: SocioSeer | Forgot password email
+      from: socioseeer@gmail.com
+      message: Please click on link to reset your password %s
+    url: http://14.141.23.102:9000/~reset-password/%s  
+  
+admin:
+  rest:
+    service:
+      name:socio-seer-restapp
+
+mongo:
+  host: localhost:27017
+  db:
+    name: socio-seer
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+  instance:
+    preferIpAddress: true
+    metadataMap:
+      instanceId: ${spring.application.name}:${server.port}
+
+kafka:
+  servers:
+    bootstrap: localhost:9092
+  topic:
+    emailNotification: email-notification-topic

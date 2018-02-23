@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: socio-seer-integration-app
+  datasource:
+    url: jdbc:mysql://localhost:3306/integrationschedulerdb?autoReconnect=true&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  retry:
+    maxAttempts: 3
+    backOffPeriod: 3000
+
+server:
+  port: 8084
+  
+kafka:
+  servers:
+    bootstrap: localhost:9092
+  consumer:
+    group:
+      socialPost: social-post-int-group
+      socialPlatformPost : social-platform-post-group
+      twitterStream: twitter-stream-group
+  topic:
+    socialPost: social-post
+    socialPostId: social-post-id
+    socialPlatformPostTopic: social-platform-post
+    socialHandlerTopic: social-handler-topic
+    twitterStreamTopic: twitter-stream-topic
+    socialPostAggregator: social-post-aggregator
+    socialHandlerUserId: social-handler-user-topic
+    campaignHashTagSummary: campaign-hash-tag-summary
+    userMentionSummary: user-mentions-summary
+    socialUserProfileLookUp: social-user-profile-look-up
+    socialUserProfile: social-user-profile
+    
+rest:
+  client:
+    connectionTimeoutMillis: 3000
+    readTimeoutMillis: 3000
+    maxConnectionsPerHost: 20
+    maxTotalConnections: 200
+
+redis:
+  host: 127.0.0.1
+  password: 
+  port: 6379
+  
+mongo:
+  host: localhost:27017
+  db:
+    name: socio-seer-platform-post
+    
+quartz:
+  enabled: true
+      
+cron:
+  expression:
+    social-poller: 0 0/8 * * * ?
+    twitter-poller: 0 0/15 * * * ?
+    post-aggregator: 0 0/17 * * * ?
+    twitter-hash-tag-poller: 0 0/20 * * * ?
+    social-profile-lookup: 0 0/25 * * * ?
+    
+twitter:
+  stream-consumer:
+    key: hudWQEmYTBmMxIVI9Llo5RLd3
+    secret: ECjE3IfcTalhgMmLk5RzA6Gb5Y9zE05at07Kg6cH89lD9LXP9t
+  stream-access:
+    key: 864051796444041216-LZ8CTa5lEntnGb7V9pPDMkYJaZQiUDK
+    secret: XFgdYIOl6ahDQAb7KX9KEBo7a37mDJcyAIp4EDiz88tRb
+  consumer:
+    key: fGeVSmbh0xjHymJUl4U9MkcUe
+    secret: pxHkhuLhl7ZcT5phuDM3igLURqUAyqLd66FITxW3zkbhKrk470
+
+facebook:
+  field:
+    names: message,comments.summary(true),likes.summary(true),shares.summary(true)
